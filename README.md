@@ -1,5 +1,7 @@
 # [**@ladjs/graceful**](https://github.com/ladjs/graceful)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ladjs/graceful.svg)](https://greenkeeper.io/)
+
 [![build status](https://img.shields.io/travis/ladjs/graceful.svg)](https://travis-ci.org/ladjs/graceful)
 [![code coverage](https://img.shields.io/codecov/c/github/ladjs/graceful.svg)](https://codecov.io/gh/ladjs/graceful)
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
