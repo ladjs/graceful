@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/graceful",
   "description": "Gracefully exit server (Koa), database (Mongo/Mongoose), and job scheduler (Redis/Bull)",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/graceful/issues",
