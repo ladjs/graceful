@@ -7,7 +7,7 @@
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![license](https://img.shields.io/github/license/ladjs/graceful.svg)](<>)
 
-> Gracefully exit server (Koa), database (Mongo/Mongoose), and job scheduler (Agenda)
+> Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, and job scheduler (Redis/Bull)
 
 
 ## Table of Contents
@@ -39,66 +39,21 @@ Using this package will bind process event listeners when `graceful.listen()` is
 
 * `process.on('warning')` - will output via `config.logger.warn`
 * `process.on('unhandledRejection')` - will output via `config.logger.error`
-* `process.on('uncaughtException')` - will output via `config.logger.error` and `process.exit(1)`
+* `process.once('uncaughtException')` - will output via `config.logger.error` and `process.exit(1)` (_does not exit gracefully_)
 * `process.on('message')` - support Windows (e.g. signals not available) and listen for message of `shutdown` and then exit gracefully
-* `process.on('SIGTERM')` - will exit gracefully
-* `process.on('SIGHUP')` - will exit gracefully
-* `process.on('SIGINT')` - will exit gracefully
+* `process.once('SIGTERM')` - will exit gracefully
+* `process.once('SIGHUP')` - will exit gracefully
+* `process.once('SIGINT')` - will exit gracefully
+* `process.once('SIGUSR2')` - will exit gracefully (nodemon support)
 
 This package also prevents multiple process/SIG events from triggering multiple graceful exits. Only one graceful exit can occur at a time.
 
-An example below shows usage showing `server`, `redisClient`, `mongoose`, and `agenda` options all being passed.
+See one of these following files from [Lad][] for the most up to date usage example:
 
-Please note that NONE of these are required, as each one is completely optional and independent.
-
-However if you have both `mongoose` and `agenda` defined, it knows to stop `agenda` first using [stop-agenda][], then disconnect `mongoose`.
-
-```js
-const http = require('http');
-
-const Graceful = require('@ladjs/graceful');
-const Mongoose = require('@ladjs/mongoose');
-const Koa = require('koa');
-const redis = require('redis');
-const Agenda = require('agenda');
-
-const app = new Koa();
-const agenda = new Agenda();
-
-let server = http.createServer(app.callback());
-server = server.listen();
-
-const redisClient = redis.createClient();
-
-const mongoose = new Mongoose({ agenda }).mongoose;
-
-const graceful = new Graceful({
-
-  // uses `server.close` for graceful exit
-  server,
-
-  // uses `redisClient.quit` for graceful exit
-  redisClient,
-
-  // uses `mongoose.disconnect` for graceful exit
-  mongoose,
-
-  // uses `stop-agenda` package for graceful exit
-  agenda,
-
-  // default logger (you can also use `new Logger()` from @ladjs/logger)
-  logger: console,
-
-  // options get passed to `stop-agenda`
-  // <https://github.com/ladjs/stop-agenda>
-  stopAgenda: {},
-
-  // max time allowed in ms for graceful exit
-  timeoutMs: 5000
-});
-
-graceful.listen();
-```
+* API - <https://github.com/ladjs/lad/blob/master/template/api.js>
+* Web - <https://github.com/ladjs/lad/blob/master/template/web.js>
+* Bull - <https://github.com/ladjs/lad/blob/master/template/bull.js>
+* Proxy - <https://github.com/ladjs/lad/blob/master/template/proxy.js>
 
 
 ## Contributors
@@ -119,4 +74,4 @@ graceful.listen();
 
 [yarn]: https://yarnpkg.com/
 
-[stop-agenda]: https://github.com/ladjs/stop-agenda
+[lad]: https://lad.js.org
