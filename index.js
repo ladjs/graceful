@@ -33,7 +33,11 @@ class Graceful {
 
   listen() {
     // handle warnings
-    process.on('warning', this.logger.warn.bind(this.logger));
+    process.on('warning', warning => {
+      // <https://github.com/pinojs/pino/issues/833#issuecomment-625192482>
+      warning.emitter = null;
+      this.logger.warn(warning);
+    });
 
     // handle uncaught promises
     process.on('unhandledRejection', this.logger.error.bind(this.logger));
