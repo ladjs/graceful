@@ -7,7 +7,7 @@
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![license](https://img.shields.io/github/license/ladjs/graceful.svg)](<>)
 
-> Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, and job scheduler (Redis/Bull)
+> Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, Bree job schedulers, and Bull job schedulers
 
 
 ## Table of Contents
@@ -54,6 +54,8 @@ See one of these following files from [Lad][] for the most up to date usage exam
 * Web - <https://github.com/ladjs/lad/blob/master/template/web.js>
 * Bull - <https://github.com/ladjs/lad/blob/master/template/bull.js>
 * Proxy - <https://github.com/ladjs/lad/blob/master/template/proxy.js>
+
+You can also read more about Bree at <https://github.com/breejs/bree>.
 
 
 ## Contributors

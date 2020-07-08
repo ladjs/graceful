@@ -7,6 +7,7 @@ class Graceful {
       redisClients: [],
       mongooses: [],
       bulls: [],
+      brees: [],
       logger: console,
       timeoutMs: 5000,
       ...config
@@ -28,12 +29,14 @@ class Graceful {
     this.stopMongooses = this.stopMongooses.bind(this);
     this.stopBull = this.stopBull.bind(this);
     this.stopBulls = this.stopBulls.bind(this);
+    this.stopBree = this.stopBree.bind(this);
+    this.stopBrees = this.stopBrees.bind(this);
     this.exit = this.exit.bind(this);
   }
 
   listen() {
     // handle warnings
-    process.on('warning', warning => {
+    process.on('warning', (warning) => {
       // <https://github.com/pinojs/pino/issues/833#issuecomment-625192482>
       warning.emitter = null;
       this.logger.warn(warning);
@@ -43,14 +46,14 @@ class Graceful {
     process.on('unhandledRejection', this.logger.error.bind(this.logger));
 
     // handle uncaught exceptions
-    process.once('uncaughtException', err => {
+    process.once('uncaughtException', (err) => {
       this.logger.error(err);
       process.exit(1);
     });
 
     // handle windows support (signals not available)
     // <http://pm2.keymetrics.io/docs/usage/signals-clean-restart/#windows-graceful-stop>
-    process.on('message', async message => {
+    process.on('message', async (message) => {
       if (message === 'shutdown') {
         this.logger.info('Received shutdown message');
         await this.exit();
@@ -60,7 +63,7 @@ class Graceful {
     // handle graceful restarts
     // support nodemon (SIGUSR2 as well)
     // <https://github.com/remy/nodemon#controlling-shutdown-of-your-script>
-    ['SIGTERM', 'SIGHUP', 'SIGINT', 'SIGUSR2'].forEach(sig => {
+    ['SIGTERM', 'SIGHUP', 'SIGINT', 'SIGUSR2'].forEach((sig) => {
       process.once(sig, async () => {
         await this.exit(sig);
       });
@@ -77,7 +80,7 @@ class Graceful {
 
   async stopServers() {
     await Promise.all(
-      this.config.servers.map(server => this.stopServer(server))
+      this.config.servers.map((server) => this.stopServer(server))
     );
   }
 
@@ -94,7 +97,7 @@ class Graceful {
 
   async stopRedisClients() {
     await Promise.all(
-      this.config.redisClients.map(client => this.stopRedisClient(client))
+      this.config.redisClients.map((client) => this.stopRedisClient(client))
     );
   }
 
@@ -108,7 +111,7 @@ class Graceful {
 
   async stopMongooses() {
     await Promise.all(
-      this.config.mongooses.map(mongoose => this.stopMongoose(mongoose))
+      this.config.mongooses.map((mongoose) => this.stopMongoose(mongoose))
     );
   }
 
@@ -121,7 +124,21 @@ class Graceful {
   }
 
   async stopBulls() {
-    await Promise.all(this.config.bulls.map(bull => this.stopBull(bull)));
+    await Promise.all(this.config.bulls.map((bull) => this.stopBull(bull)));
+  }
+
+  stopBree(bree) {
+    try {
+      bree.stop();
+    } catch (err) {
+      this.config.logger.error(err);
+    }
+  }
+
+  stopBrees() {
+    for (const bree of this.config.brees) {
+      this.stopBree(bree);
+    }
   }
 
   async exit(code) {
@@ -156,7 +173,9 @@ class Graceful {
         // mongooses
         this.stopMongooses(),
         // bulls
-        this.stopBulls()
+        this.stopBulls(),
+        // brees
+        this.stopBrees()
       ]);
       this.logger.info('Gracefully exited');
       // eslint-disable-next-line unicorn/no-process-exit
