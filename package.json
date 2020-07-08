@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/graceful",
   "description": "Gracefully exit server (Koa), database (Mongo/Mongoose), Bree job schedulers, and Bull job schedulers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/graceful/issues",
