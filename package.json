@@ -1,6 +1,6 @@
 {
   "name": "@ladjs/graceful",
-  "description": "Gracefully exit server (Koa), database (Mongo/Mongoose), Bree job schedulers, and Bull job schedulers",
+  "description": "Gracefully exit server (Koa), database (Mongo/Mongoose), Bree job schedulers, Bull job schedulers, and custom handlers.",
   "version": "1.0.3",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
@@ -13,7 +13,8 @@
     ]
   },
   "contributors": [
-    "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)"
+    "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
+    "Felix Mosheev (https://github.com/felixmosh)"
   ],
   "dependencies": {
     "debug": "^4.1.1"

@@ -7,7 +7,7 @@
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![license](https://img.shields.io/github/license/ladjs/graceful.svg)](<>)
 
-> Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, Bree job schedulers, and Bull job schedulers
+> Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, Bree job schedulers, Bull job schedulers, and custom handlers.
 
 
 ## Table of Contents
@@ -60,9 +60,10 @@ You can also read more about Bree at <https://github.com/breejs/bree>.
 
 ## Contributors
 
-| Name           | Website                    |
-| -------------- | -------------------------- |
-| **Nick Baugh** | <http://niftylettuce.com/> |
+| Name              | Website                        |
+| ----------------- | ------------------------------ |
+| **Nick Baugh**    | <http://niftylettuce.com/>     |
+| **Felix Mosheev** | <https://github.com/felixmosh> |
 
 
 ## License

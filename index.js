@@ -153,7 +153,11 @@ class Graceful {
   }
 
   stopCustomHandlers() {
-    return Promise.all(this.config.customHandlers.map((handler) => this.stopCustomHandler(handler)));
+    return Promise.all(
+      this.config.customHandlers.map((handler) =>
+        this.stopCustomHandler(handler)
+      )
+    );
   }
 
   async exit(code) {
