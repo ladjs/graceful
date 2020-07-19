@@ -8,6 +8,7 @@ class Graceful {
       mongooses: [],
       bulls: [],
       brees: [],
+      customHandlers: [],
       logger: console,
       timeoutMs: 5000,
       ...config
@@ -31,6 +32,8 @@ class Graceful {
     this.stopBulls = this.stopBulls.bind(this);
     this.stopBree = this.stopBree.bind(this);
     this.stopBrees = this.stopBrees.bind(this);
+    this.stopCustomHandler = this.stopCustomHandler.bind(this);
+    this.stopCustomHandlers = this.stopCustomHandlers.bind(this);
     this.exit = this.exit.bind(this);
   }
 
@@ -141,6 +144,18 @@ class Graceful {
     }
   }
 
+  async stopCustomHandler(handler) {
+    try {
+      await handler();
+    } catch (err) {
+      this.config.logger.error(err);
+    }
+  }
+
+  stopCustomHandlers() {
+    return Promise.all(this.config.customHandlers.map((handler) => this.stopCustomHandler(handler)));
+  }
+
   async exit(code) {
     if (code) this.logger.info(`Gracefully exiting from ${code}`);
 
@@ -175,7 +190,9 @@ class Graceful {
         // bulls
         this.stopBulls(),
         // brees
-        this.stopBrees()
+        this.stopBrees(),
+        // custom handlers
+        this.stopCustomHandlers()
       ]);
       this.logger.info('Gracefully exited');
       // eslint-disable-next-line unicorn/no-process-exit
