@@ -92,7 +92,7 @@ class Graceful {
     // TODO: give it a max of 500ms
     // https://github.com/OptimalBits/bull/blob/develop/lib/queue.js#L516
     try {
-      await client.quit();
+      await client.disconnect();
     } catch (err) {
       this.config.logger.error(err);
     }

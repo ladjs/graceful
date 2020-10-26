@@ -5,7 +5,7 @@
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
-[![license](https://img.shields.io/github/license/ladjs/graceful.svg)](<>)
+[![license](https://img.shields.io/github/license/ladjs/graceful.svg)]()
 
 > Gracefully exit server (Koa), database (Mongo/Mongoose), Redis clients, Bree job schedulers, Bull job schedulers, and custom handlers.
 
@@ -39,7 +39,7 @@ Using this package will bind process event listeners when `graceful.listen()` is
 
 * `process.on('warning')` - will output via `config.logger.warn`
 * `process.on('unhandledRejection')` - will output via `config.logger.error`
-* `process.once('uncaughtException')` - will output via `config.logger.error` and `process.exit(1)` (_does not exit gracefully_)
+* `process.once('uncaughtException')` - will output via `config.logger.error` and `process.exit(1)` (*does not exit gracefully*)
 * `process.on('message')` - support Windows (e.g. signals not available) and listen for message of `shutdown` and then exit gracefully
 * `process.once('SIGTERM')` - will exit gracefully
 * `process.once('SIGHUP')` - will exit gracefully
@@ -71,7 +71,7 @@ You can also read more about Bree at <https://github.com/breejs/bree>.
 [MIT](LICENSE) © [Nick Baugh](http://niftylettuce.com/)
 
 
-## 
+##
 
 [npm]: https://www.npmjs.com/
 
