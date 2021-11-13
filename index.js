@@ -1,3 +1,4 @@
+const process = require('process');
 const debug = require('debug')('@ladjs/graceful');
 
 class Graceful {
@@ -66,11 +67,11 @@ class Graceful {
     // handle graceful restarts
     // support nodemon (SIGUSR2 as well)
     // <https://github.com/remy/nodemon#controlling-shutdown-of-your-script>
-    ['SIGTERM', 'SIGHUP', 'SIGINT', 'SIGUSR2'].forEach((sig) => {
+    for (const sig of ['SIGTERM', 'SIGHUP', 'SIGINT', 'SIGUSR2']) {
       process.once(sig, async () => {
         await this.exit(sig);
       });
-    });
+    }
   }
 
   async stopServer(server) {

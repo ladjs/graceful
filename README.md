@@ -60,10 +60,11 @@ You can also read more about Bree at <https://github.com/breejs/bree>.
 
 ## Contributors
 
-| Name              | Website                        |
-| ----------------- | ------------------------------ |
-| **Nick Baugh**    | <http://niftylettuce.com/>     |
-| **Felix Mosheev** | <https://github.com/felixmosh> |
+| Name                | Website                        |
+| ------------------- | ------------------------------ |
+| **Nick Baugh**      | <http://niftylettuce.com/>     |
+| **Felix Mosheev**   | <https://github.com/felixmosh> |
+| **Nicholai Nissen** | <https://nicholai.dev>         |
 
 
 ## License
