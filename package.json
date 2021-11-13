@@ -111,6 +111,7 @@
     "test": "npm run lint && npm run test-coverage",
     "test-coverage": "cross-env NODE_ENV=test nyc ava"
   },
+  "types": "index.d.ts",
   "xo": {
     "prettier": true,
     "space": true,
