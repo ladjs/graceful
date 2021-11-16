@@ -1,4 +1,4 @@
-declare module '@ocalan/graceful' {
+declare module '@ladjs/graceful' {
   export interface GracefulOptions {
     servers?: Array<{ close(): unknown }>;
     mongooses?: Array<{ disconnect(): Promise<void> }>;
