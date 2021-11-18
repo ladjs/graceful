@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/graceful",
   "description": "Gracefully exit server (Koa), database (Mongo/Mongoose), Bree job schedulers, Bull job schedulers, and custom handlers.",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/graceful/issues",
@@ -14,37 +14,32 @@
   },
   "contributors": [
     "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
-    "Felix Mosheev (https://github.com/felixmosh)"
+    "Felix Mosheev (https://github.com/felixmosh)",
+    "Nicholai Nissen <nicholainissen@gmail.com> (https://nicholai.dev)"
   ],
   "dependencies": {
-    "debug": "^4.2.0"
+    "debug": "^4.3.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^11.0.0",
-    "ava": "^3.13.0",
-    "codecov": "^3.8.0",
-    "cross-env": "^7.0.2",
-    "eslint": "7.12.0",
-    "eslint-config-xo-lass": "^1.0.4",
-    "fixpack": "^3.0.6",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.4.2",
+    "@commitlint/cli": "^14.1.0",
+    "@commitlint/config-conventional": "^14.1.0",
+    "ava": "^3.15.0",
+    "codecov": "^3.8.2",
+    "cross-env": "^7.0.3",
+    "eslint": "8.2.0",
+    "eslint-config-xo-lass": "^1.0.6",
+    "fixpack": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6",
     "nyc": "^15.1.0",
-    "remark-cli": "^9.0.0",
-    "remark-preset-github": "^3.0.4",
-    "xo": "^0.34.1"
+    "remark-cli": "^10.0.0",
+    "remark-preset-github": "^4.0.1",
+    "xo": "^0.46.4"
   },
   "engines": {
     "node": ">=8.3"
   },
   "homepage": "https://github.com/ladjs/graceful",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npm test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "keywords": [
     "bree",
     "bull",
@@ -108,9 +103,11 @@
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "xo && remark . -qfo",
+    "prepare": "husky install",
     "test": "npm run lint && npm run test-coverage",
     "test-coverage": "cross-env NODE_ENV=test nyc ava"
   },
+  "types": "index.d.ts",
   "xo": {
     "prettier": true,
     "space": true,
