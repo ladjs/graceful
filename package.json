@@ -100,6 +100,9 @@
     "type": "git",
     "url": "https://github.com/ladjs/graceful"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "xo && remark . -qfo",
