@@ -47,7 +47,9 @@ class Graceful {
     });
 
     // handle uncaught promises
-    process.on('unhandledRejection', this.logger.error.bind(this.logger));
+    process.on('unhandledRejection', (err) => {
+      this.logger.error(err);
+    });
 
     // handle uncaught exceptions
     process.once('uncaughtException', (err) => {
