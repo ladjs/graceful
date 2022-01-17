@@ -133,18 +133,16 @@ class Graceful {
     await Promise.all(this.config.bulls.map((bull) => this.stopBull(bull)));
   }
 
-  stopBree(bree) {
+  async stopBree(bree) {
     try {
-      bree.stop();
+      await bree.stop();
     } catch (err) {
       this.config.logger.error(err);
     }
   }
 
-  stopBrees() {
-    for (const bree of this.config.brees) {
-      this.stopBree(bree);
-    }
+  async stopBrees() {
+    await Promise.all(this.config.brees.map((bree) => this.stopBree(bree)));
   }
 
   async stopCustomHandler(handler) {
