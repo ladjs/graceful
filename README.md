@@ -38,7 +38,7 @@ yarn add @ladjs/graceful
 Using this package will bind process event listeners when `graceful.listen()` is called:
 
 * `process.on('warning')` - will output via `config.logger.warn`
-* `process.on('unhandledRejection')` - will output via `config.logger.error`
+* `process.on('unhandledRejection')` - bubbles up to `uncaughtException` (will output via `config.logger.error` and `process.exit(1)` (*does not exit gracefully*)
 * `process.once('uncaughtException')` - will output via `config.logger.error` and `process.exit(1)` (*does not exit gracefully*)
 * `process.on('message')` - support Windows (e.g. signals not available) and listen for message of `shutdown` and then exit gracefully
 * `process.once('SIGTERM')` - will exit gracefully
