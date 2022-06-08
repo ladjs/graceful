@@ -4,9 +4,10 @@
 node_modules
 coverage
 .nyc_output
-
+yarn.lock
 
 Thumbs.db
 tmp/
 temp/
 *.lcov
+locales
