@@ -164,9 +164,9 @@ Here is the full list of options and their defaults.  See [index.js](index.js) f
 | `redisClients`      | Array  | `[]`          | An array of Redis client instances to gracefully exit                                                                                                                                             |
 | `mongooses`         | Array  | `[]`          | An array of Mongoose connections to gracefully exit                                                                                                                                               |
 | `customHandlers`    | Array  | `[]`          | An array of functions (custom handlers) to invoke upon graceful exit                                                                                                                              |
+| `logger`            | Object | `console`     | This is the default logger.  **We recommend using [Cabin][cabin]** instead of using `console` as your default logger.  Set this value to `false` to disable logging entirely (uses noop function) |
 | `timeoutMs`         | Number | `5000`        | A number in milliseconds for how long to wait to gracefully exit                                                                                                                                  |
 | `lilHttpTerminator` | Object | `{}`          | An object of options to pass to `lil-http-terminator` to override default options provided                                                                                                        |
-| `logger`            | Object | `console`     | This is the default logger.  **We recommend using [Cabin][cabin]** instead of using `console` as your default logger.  Set this value to `false` to disable logging entirely (uses noop function) |
 
 
 ## Examples

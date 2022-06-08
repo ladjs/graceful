@@ -15,7 +15,6 @@ export interface GracefulOptions {
   brees?: Array<{ stop(): Promise<void> }>;
   redisClients?: Array<{ disconnect(): unknown }>;
   mongooses?: Array<{ disconnect(): Promise<void> }>;
-  bulls?: Array<{ close(): unknown }>;
   customHandlers?: Array<() => unknown>;
   logger?: Logger;
   timeoutMs?: number;

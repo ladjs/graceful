@@ -67,7 +67,6 @@ class Graceful {
     this.stopRedisClients = this.stopRedisClients.bind(this);
     this.stopMongoose = this.stopMongoose.bind(this);
     this.stopMongooses = this.stopMongooses.bind(this);
-    this.stopBull = this.stopBull.bind(this);
     this.stopBree = this.stopBree.bind(this);
     this.stopBrees = this.stopBrees.bind(this);
     this.stopCustomHandler = this.stopCustomHandler.bind(this);
@@ -179,14 +178,6 @@ class Graceful {
     await Promise.all(
       this.config.mongooses.map((mongoose) => this.stopMongoose(mongoose, code))
     );
-  }
-
-  async stopBull(bull, code) {
-    try {
-      await bull.close();
-    } catch (err) {
-      this.logger.error(err, { code });
-    }
   }
 
   async stopBree(bree, code) {
