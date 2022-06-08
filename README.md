@@ -6,7 +6,7 @@
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
 [![license](https://img.shields.io/github/license/ladjs/graceful.svg)]()
 
-> Gracefully exit HTTP servers (Express/Koa/Fastify/etc), databases (Mongo/Mongoose), Redis clients, Bree job schedulers, and custom handlers.
+> Gracefully exit HTTP servers (Express/Koa/Fastify/etc), databases (Mongo/Mongoose), Redis clients, [Bree][] job schedulers, and custom handlers.
 
 
 ## Table of Contents
@@ -212,3 +212,5 @@ You can also read more about Bree at <https://github.com/breejs/bree>.
 [lil-http-terminator]: https://github.com/flash-oss/lil-http-terminator
 
 [cabin]: https://cabinjs.com
+
+[bree]: https://jobscheduler.net
