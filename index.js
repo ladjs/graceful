@@ -1,7 +1,7 @@
-const http = require('node:http');
-const net = require('node:net');
-const process = require('node:process');
-const util = require('node:util');
+const http = require('http');
+const net = require('net');
+const process = require('process');
+const util = require('util');
 
 const isPromise = require('p-is-promise');
 const HttpTerminator = require('lil-http-terminator');
