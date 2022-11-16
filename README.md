@@ -82,7 +82,17 @@ const graceful = new Graceful({
   timeoutMs: 5000,
 
   // options to pass to `lil-http-terminator` to override defaults
-  lilHttpTerminator: {}
+  lilHttpTerminator: {},
+
+  //
+  // appends a `true` boolean value to a property of this name in the logger meta object
+  // (this is useful for Cabin/Axe as it will prevent a log from being created in MongoDB)
+  // (and instead of having a DB log created upon graceful exit, it will simply log to console)
+  // (defer to the Forward Email codebase, specifically the logger helper)
+  //
+  // NOTE: if you set this to `false` then this will be ignored and no meta property will be populated
+  //
+  ignoreHook: 'ignore_hook'
 });
 
 //
@@ -157,16 +167,17 @@ This package works with any server created with `http.createServer` or `net.crea
 
 Here is the full list of options and their defaults.  See [index.js](index.js) for more insight if necessary.
 
-| Property            | Type   | Default Value | Description                                                                                                                                                                                       |
-| ------------------- | ------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `servers`           | Array  | `[]`          | An array of HTTP or NET servers to gracefully close on exit                                                                                                                                       |
-| `brees`             | Array  | `[]`          | An array of [Bree][] instances to gracefully exit                                                                                                                                                 |
-| `redisClients`      | Array  | `[]`          | An array of Redis client instances to gracefully exit                                                                                                                                             |
-| `mongooses`         | Array  | `[]`          | An array of Mongoose connections to gracefully exit                                                                                                                                               |
-| `customHandlers`    | Array  | `[]`          | An array of functions (custom handlers) to invoke upon graceful exit                                                                                                                              |
-| `logger`            | Object | `console`     | This is the default logger.  **We recommend using [Cabin][cabin]** instead of using `console` as your default logger.  Set this value to `false` to disable logging entirely (uses noop function) |
-| `timeoutMs`         | Number | `5000`        | A number in milliseconds for how long to wait to gracefully exit                                                                                                                                  |
-| `lilHttpTerminator` | Object | `{}`          | An object of options to pass to `lil-http-terminator` to override default options provided                                                                                                        |
+| Property            | Type                      | Default Value   | Description                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------- | ------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `servers`           | Array                     | `[]`            | An array of HTTP or NET servers to gracefully close on exit                                                                                                                                                                                                                                                                                                                                     |
+| `brees`             | Array                     | `[]`            | An array of [Bree][] instances to gracefully exit                                                                                                                                                                                                                                                                                                                                               |
+| `redisClients`      | Array                     | `[]`            | An array of Redis client instances to gracefully exit                                                                                                                                                                                                                                                                                                                                           |
+| `mongooses`         | Array                     | `[]`            | An array of Mongoose connections to gracefully exit                                                                                                                                                                                                                                                                                                                                             |
+| `customHandlers`    | Array                     | `[]`            | An array of functions (custom handlers) to invoke upon graceful exit                                                                                                                                                                                                                                                                                                                            |
+| `logger`            | Object                    | `console`       | This is the default logger.  **We recommend using [Cabin][cabin]** instead of using `console` as your default logger.  Set this value to `false` to disable logging entirely (uses noop function)                                                                                                                                                                                               |
+| `timeoutMs`         | Number                    | `5000`          | A number in milliseconds for how long to wait to gracefully exit                                                                                                                                                                                                                                                                                                                                |
+| `lilHttpTerminator` | Object                    | `{}`            | An object of options to pass to `lil-http-terminator` to override default options provided                                                                                                                                                                                                                                                                                                      |
+| `ignoreHook`        | String or `false` Boolean | `"ignore_hook"` | Appends a `true` boolean property to a property with this value in logs, e.g. `console.log('graceful exiting', { ignore_hook: true });` which is useful for preventing logs from being written to a database in hooks (this is meant for usage with [Cabin][] and [Axe][] and made for [Forward Email][forward-email]).  If you pass a `false` value then this property will not get populated. |
 
 
 ## Examples
@@ -214,3 +225,7 @@ You can also read more about Bree at <https://github.com/breejs/bree>.
 [cabin]: https://cabinjs.com
 
 [bree]: https://jobscheduler.net
+
+[axe]: https://github.com/cabinjs/axe
+
+[forward-email]: https://github.com/forwardemail

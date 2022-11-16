@@ -19,6 +19,7 @@ class Graceful {
       logger: console,
       timeoutMs: 5000,
       lilHttpTerminator: {},
+      ignoreHook: 'ignore_hook',
       ...config
     };
 
@@ -30,12 +31,9 @@ class Graceful {
         error() {}
       };
 
-    // shortcut logger
-    this.logger = this.config.logger;
-
-    // if lilHttpTerminator does not have a logger set then re-use `this.logger`
+    // if lilHttpTerminator does not have a logger set then re-use `this.config.logger`
     if (!this.config.lilHttpTerminator.logger)
-      this.config.lilHttpTerminator.logger = this.logger;
+      this.config.lilHttpTerminator.logger = this.config.logger;
 
     // prevent multiple SIGTERM/SIGHUP/SIGINT from firing graceful exit
     this._isExiting = false;
@@ -79,7 +77,7 @@ class Graceful {
     process.on('warning', (warning) => {
       // <https://github.com/pinojs/pino/issues/833#issuecomment-625192482>
       warning.emitter = null;
-      this.logger.warn(warning);
+      this.config.logger.warn(warning);
     });
 
     // handle uncaught promises
@@ -95,7 +93,7 @@ class Graceful {
 
     // handle uncaught exceptions
     process.once('uncaughtException', (err) => {
-      this.logger.error(err);
+      this.config.logger.error(err);
       process.exit(1);
     });
 
@@ -103,7 +101,11 @@ class Graceful {
     // <http://pm2.keymetrics.io/docs/usage/signals-clean-restart/#windows-graceful-stop>
     process.on('message', async (message) => {
       if (message === 'shutdown') {
-        this.logger.info('Received shutdown message');
+        if (this.config.ignoreHook)
+          this.config.logger.info('Received shutdown message', {
+            [this.config.ignoreHook]: true
+          });
+        else this.config.logger.info('Received shutdown message');
         await this.exit();
       }
     });
@@ -139,7 +141,10 @@ class Graceful {
           : util.promisify(server.close).bind(server)());
       }
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
     }
   }
 
@@ -154,7 +159,10 @@ class Graceful {
     try {
       await client.disconnect();
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
     }
   }
 
@@ -170,7 +178,10 @@ class Graceful {
     try {
       await mongoose.disconnect();
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
     }
   }
 
@@ -184,7 +195,10 @@ class Graceful {
     try {
       await bree.stop();
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
     }
   }
 
@@ -198,7 +212,10 @@ class Graceful {
     try {
       await handler();
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
     }
   }
 
@@ -211,10 +228,17 @@ class Graceful {
   }
 
   async exit(code) {
-    if (code) this.logger.info('Gracefully exiting', { code });
+    if (code)
+      this.config.logger.info('Gracefully exiting', {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
 
     if (this._isExiting) {
-      this.logger.info('Graceful exit already in progress', { code });
+      this.config.logger.info('Graceful exit already in progress', {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
       return;
     }
 
@@ -222,11 +246,14 @@ class Graceful {
 
     // give it only X ms to gracefully exit
     setTimeout(() => {
-      this.logger.error(
+      this.config.logger.error(
         new Error(
           `Graceful exit failed, timeout of ${this.config.timeoutMs}ms was exceeded`
         ),
-        { code }
+        {
+          code,
+          ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        }
       );
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1);
@@ -245,11 +272,17 @@ class Graceful {
         // custom handlers
         this.stopCustomHandlers(code)
       ]);
-      this.logger.info('Gracefully exited', { code });
+      this.config.logger.info('Gracefully exited', {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(0);
     } catch (err) {
-      this.logger.error(err, { code });
+      this.config.logger.error(err, {
+        code,
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+      });
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1);
     }

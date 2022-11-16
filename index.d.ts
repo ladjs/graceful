@@ -1,16 +1,16 @@
-interface Logger {
+type Logger = {
   info(): unknown;
   warn(): unknown;
   error(): unknown;
-}
+};
 
-interface LilHttpTerminator {
+type LilHttpTerminator = {
   gracefulTerminationTimeout?: number;
   maxWaitTimeout?: number;
   logger?: Logger;
-}
+};
 
-export interface GracefulOptions {
+export type GracefulOptions = {
   servers?: Array<{ close(): unknown }>;
   brees?: Array<{ stop(): Promise<void> }>;
   redisClients?: Array<{ disconnect(): unknown }>;
@@ -19,7 +19,8 @@ export interface GracefulOptions {
   logger?: Logger;
   timeoutMs?: number;
   lilHttpTerminator?: LilHttpTerminator;
-}
+  ignoreHook?: string | boolean;
+};
 
 export default class Graceful {
   constructor(options?: GracefulOptions);
