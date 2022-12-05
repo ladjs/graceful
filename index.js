@@ -20,6 +20,8 @@ class Graceful {
       timeoutMs: 5000,
       lilHttpTerminator: {},
       ignoreHook: 'ignore_hook',
+      hideMeta: 'hide_meta',
+      uncaughtExceptionTimeoutMsMs: 100,
       ...config
     };
 
@@ -77,7 +79,9 @@ class Graceful {
     process.on('warning', (warning) => {
       // <https://github.com/pinojs/pino/issues/833#issuecomment-625192482>
       warning.emitter = null;
-      this.config.logger.warn(warning);
+      if (this.config.hideMeta)
+        this.config.logger.warn(warning, { [this.config.hideMeta]: true });
+      else this.config.logger.warn(warning);
     });
 
     // handle uncaught promises
@@ -93,19 +97,25 @@ class Graceful {
 
     // handle uncaught exceptions
     process.once('uncaughtException', (err) => {
-      this.config.logger.error(err);
-      process.exit(1);
+      if (this.config.hideMeta)
+        this.config.logger.error(err, { [this.config.hideMeta]: true });
+      else this.config.logger.error(err);
+      // artificial timeout to allow logger to store uncaught exception to db
+      if (this.config.uncaughtExceptionTimeoutMs)
+        setTimeout(() => {
+          process.exit(1);
+        }, this.config.uncaughtExceptionTimeoutMs);
+      else process.exit(1);
     });
 
     // handle windows support (signals not available)
     // <http://pm2.keymetrics.io/docs/usage/signals-clean-restart/#windows-graceful-stop>
     process.on('message', async (message) => {
       if (message === 'shutdown') {
-        if (this.config.ignoreHook)
-          this.config.logger.info('Received shutdown message', {
-            [this.config.ignoreHook]: true
-          });
-        else this.config.logger.info('Received shutdown message');
+        this.config.logger.info('Received shutdown message', {
+          ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+          ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
+        });
         await this.exit();
       }
     });
@@ -143,7 +153,8 @@ class Graceful {
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
     }
   }
@@ -161,7 +172,8 @@ class Graceful {
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
     }
   }
@@ -180,7 +192,8 @@ class Graceful {
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
     }
   }
@@ -197,7 +210,8 @@ class Graceful {
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
     }
   }
@@ -214,7 +228,8 @@ class Graceful {
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
     }
   }
@@ -231,13 +246,15 @@ class Graceful {
     if (code)
       this.config.logger.info('Gracefully exiting', {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
 
     if (this._isExiting) {
       this.config.logger.info('Graceful exit already in progress', {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
       return;
     }
@@ -252,7 +269,8 @@ class Graceful {
         ),
         {
           code,
-          ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+          ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+          ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
         }
       );
       // eslint-disable-next-line unicorn/no-process-exit
@@ -274,14 +292,16 @@ class Graceful {
       ]);
       this.config.logger.info('Gracefully exited', {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(0);
     } catch (err) {
       this.config.logger.error(err, {
         code,
-        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {})
+        ...(this.config.ignoreHook ? { [this.config.ignoreHook]: true } : {}),
+        ...(this.config.hideMeta ? { [this.config.hideMeta]: true } : {})
       });
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1);
