@@ -1,7 +1,7 @@
 type Logger = {
-  info(): unknown;
-  warn(): unknown;
-  error(): unknown;
+  info(...args: unknown[]): unknown;
+  warn(...args: unknown[]): unknown;
+  error(...args: unknown[]): unknown;
 };
 
 type LilHttpTerminator = {
