@@ -97,7 +97,18 @@ class Graceful {
     });
 
     // handle uncaught exceptions
-    process.on('uncaughtExceptionMonitor', (err, origin) => {
+    // NOTE: this was commented out since we monitor `uncaughtException` instead
+    // process.on('uncaughtExceptionMonitor', (err, origin) => {
+    //   console.error(err, { origin });
+    //   this.config.logger.fatal(err, { origin });
+    // });
+
+    //
+    // NOTE: due to undici having core issues across various node versions
+    //       we unfortunately have to listen for it specifically here
+    //       (e.g. `ConnectTimeoutError` causes an uncaught exception even with a custom dispatcher and using `undici.request` on Node v18)
+    //
+    process.on('uncaughtException', (err, origin) => {
       console.error(err, { origin });
       this.config.logger.fatal(err, { origin });
     });
