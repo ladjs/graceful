@@ -30,7 +30,8 @@ class Graceful {
       this.config.logger = {
         info() {},
         warn() {},
-        error() {}
+        error() {},
+        fatal() {}
       };
 
     // if lilHttpTerminator does not have a logger set then re-use `this.config.logger`
